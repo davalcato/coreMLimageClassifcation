@@ -14,6 +14,10 @@ struct ContentView: View {
     
     let model = MobileNetV2()
     
+    private func performImageClassification() {
+        
+    }
+    
     var body: some View {
         VStack {
             Image(photos[currentIndex])
@@ -53,7 +57,7 @@ struct ContentView: View {
             
             Button("Classify") {
                 // Classify the image here
-                self.model
+                self.performImageClassification()
                 
             }.padding()
                 .foregroundColor(Color.white)

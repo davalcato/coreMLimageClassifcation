@@ -38,15 +38,24 @@ extension UIImage {
             width: Int(self.size.width),
             height: Int(self.size.height),
             bitsPerComponent: 8,
-            bytesPerRow: <#T##Int#>,
-            space: <#T##CGColorSpace#>,
-            bitmapInfo: <#T##UInt32#>)
+            bytesPerRow: CVPixelBufferGetBytesPerRow(pixelBuffer!),
+            space: rgbColorSpace,
+            bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue)
         
+        context?.translateBy(x: 0, y: self.size.height)
+        context?.scaleBy(x: 1.0, y: -1.0)
         
+        UIGraphicsPushContext(context!)
+        self.draw(in: CGRect(
+            x: 0,
+            y: 0,
+            width: self.size.width,
+            height: self.size.height))
+        UIGraphicsPopContext()
+        CVPixelBufferUnlockBaseAddress(pixelBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        
+        return pixelBuffer
     }
-    
-    
-    
 }
 
 
