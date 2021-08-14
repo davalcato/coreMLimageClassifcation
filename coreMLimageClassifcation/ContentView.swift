@@ -9,12 +9,37 @@ import SwiftUI
 
 struct ContentView: View {
     
-    let photos = ["banana", "tiger","bottle"]
+    let photos = ["Banana", "tiger","bottle"]
+    
+    // Current index is a state property
     @State private var currentIndex: Int = 0
+    @State private var classificationLabel: String = ""
     
     let model = MobileNetV2()
     
     private func performImageClassification() {
+        
+        // Array of Images
+        let currentImageName = photos[currentIndex]
+        
+        guard let img = UIImage(named: currentImageName),
+              let resizedImage = img.resizeTo(size: CGSize(
+                width: 224,
+                height: 224)),
+              let buffer = resizedImage.toBuffer() else {
+                  // If failed
+                  return
+        }
+        // Get the output by passing the buffer
+        let output = try? model.prediction(image: buffer)
+        
+        // Unwrap it
+        if let output = output {
+            
+            // Display image
+            self.classificationLabel = output.classLabel
+            
+        }
         
     }
     
@@ -26,6 +51,7 @@ struct ContentView: View {
             HStack {
                 Button("Previous") {
                     
+                    // assigning the current property
                     if self.currentIndex >= self.photos.count {
                         self.currentIndex = self.currentIndex - 1
                         
@@ -63,8 +89,10 @@ struct ContentView: View {
                 .foregroundColor(Color.white)
                 .background(Color.green)
                 .cornerRadius(8)
-            
-            Text("")
+            // Display the text
+            Text(classificationLabel)
+                .font(.largeTitle)
+                .padding()
             
         }
     }

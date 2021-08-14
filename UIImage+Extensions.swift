@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImage {
     
-    func resizeTo(size :CGSize) -> UIImage {
+    func resizeTo(size :CGSize) -> UIImage? {
         
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         self.draw(in: CGRect(origin: CGPoint.zero, size: size))
