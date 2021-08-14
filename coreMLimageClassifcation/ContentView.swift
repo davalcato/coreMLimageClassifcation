@@ -36,8 +36,18 @@ struct ContentView: View {
         // Unwrap it
         if let output = output {
             
-            // Display image
-            self.classificationLabel = output.classLabel
+            // Displays final output image
+//            self.classificationLabel = output.classLabel
+            let results = output.classLabelProbs.sorted { $0.1 > $1.1 }
+            // Array of dictionary
+            let result = results.map { (key, value) in
+                // return name of key
+                return "\(key) = \(value * 100)%"
+                
+            }.joined(separator: "\n")
+            
+            classificationLabel = result
+            
             
         }
         
